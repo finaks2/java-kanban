@@ -4,14 +4,14 @@ public class Task {
 
     private final String name;
     private final String description;
-    private final Integer ID;
+    private final Integer id;
     protected TaskStatus status;
 
-    public Task(String name, String description, TaskStatus status, Integer ID) {
+    public Task(String name, String description, TaskStatus status, Integer id) {
         this.name = name;
         this.description = description;
         this.status = status;
-        this.ID = ID;
+        this.id = id;
     }
 
     public String getName() {
@@ -22,8 +22,8 @@ public class Task {
         return description;
     }
 
-    public Integer getID() {
-        return ID;
+    public Integer getId() {
+        return id;
     }
 
     public TaskStatus getStatus() {
@@ -33,7 +33,7 @@ public class Task {
 
     @Override
     public int hashCode() {
-        return ID.hashCode();
+        return id.hashCode();
     }
 
     @Override
@@ -41,7 +41,7 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return Objects.equals(ID, task.ID);
+        return Objects.equals(id, task.id);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class Task {
                 "{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", ID=" + ID +
+                ", id=" + id +
                 ", status=" + status +
                 '}';
     }

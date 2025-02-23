@@ -7,13 +7,13 @@ public class Main {
         Task task1 = new Task("Собрать яблоки",
                 "Собрать яблоки в саду, сложить в коробки.",
                 TaskStatus.NEW,
-                taskManager.getNewTaskID()
+                taskManager.getNewTaskId()
         );
 
         Task task2 = new Task("Отнести яблоки",
                 "Коробки с яблоками отнести в кладовую.",
                 TaskStatus.NEW,
-                taskManager.getNewTaskID()
+                taskManager.getNewTaskId()
         );
         taskManager.addTask(task1);
         taskManager.addTask(task2);
@@ -21,17 +21,19 @@ public class Main {
         Epic epic1 = new Epic("Отвезти маму в магазин",
                 "Помочь маме с покупками после работы.",
                 TaskStatus.NEW,
-                taskManager.getNewTaskID()
+                taskManager.getNewTaskId()
         );
         SubTask subTask1 = new SubTask("Заправить авто",
                 "Проверить сколько бензина в авто, при необходимости заправить",
                 TaskStatus.NEW,
-                taskManager.getNewTaskID()
+                taskManager.getNewTaskId(),
+                epic1
         );
         SubTask subTask2 = new SubTask("Отвезти маму",
                 "Забрать маму с работы и отвезти в магазин",
                 TaskStatus.NEW,
-                taskManager.getNewTaskID()
+                taskManager.getNewTaskId(),
+                epic1
         );
         taskManager.addTask(subTask1, epic1);
         taskManager.addTask(subTask2, epic1);
@@ -39,12 +41,13 @@ public class Main {
         Epic epic2 = new Epic("Спланировать отпуск",
                 "Составить план отличного отдыха",
                 TaskStatus.NEW,
-                taskManager.getNewTaskID()
+                taskManager.getNewTaskId()
         );
         SubTask subTask3 = new SubTask("Выбрать место",
                 "Составить список мест для отдыха и выбрать самые лучшие",
                 TaskStatus.NEW,
-                taskManager.getNewTaskID()
+                taskManager.getNewTaskId(),
+                epic2
         );
         taskManager.addTask(subTask3, epic2);
 
@@ -54,7 +57,8 @@ public class Main {
         SubTask subTask4 = new SubTask("Заправить авто",
                 "Проверить сколько бензина в авто, при необходимости заправить",
                 TaskStatus.DONE,
-                subTask1.getID()
+                subTask1.getId(),
+                epic1
         );
         taskManager.updateTask(subTask4);
 

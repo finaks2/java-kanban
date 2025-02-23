@@ -1,28 +1,34 @@
 import java.util.ArrayList;
 
 public class Epic extends Task {
-    public Epic(String name, String description, TaskStatus status, Integer ID) {
-        super(name, description, status, ID);
+
+    ArrayList<SubTask> subTasks;
+
+    public Epic(String name, String description, TaskStatus status, Integer id) {
+        super(name, description, status, id);
+        this.subTasks = new ArrayList<>();
     }
 
-    public void recalculateStatus(TaskManager manager) {
-        int taskStatus = 0;
+    public void recalculateStatus() {
 
-        ArrayList<Task> subTasks = manager.getSubTasksByEpic(this);
-        for (Task task: subTasks) {
-            if (task.getStatus().equals(TaskStatus.IN_PROGRESS)) {
-                taskStatus++;
+        int doneCount = 0;
+        int newCount = 0;
+
+        for (SubTask subTask : subTasks) {
+            if (subTask.getStatus().equals(TaskStatus.NEW)) {
+                newCount++;
             }
-            if (task.getStatus().equals(TaskStatus.DONE)) {
-                taskStatus += 10;
+            if (subTask.getStatus().equals(TaskStatus.DONE)) {
+                doneCount++;
             }
         }
 
-        status = TaskStatus.NEW;
-        if (taskStatus == subTasks.size() * 10) {
-            status = TaskStatus.DONE;
-        } else if (taskStatus > 0 && taskStatus < subTasks.size() * 10) {
-            status = TaskStatus.IN_PROGRESS;
+        if (doneCount == subTasks.size()) {
+            this.status = TaskStatus.DONE;
+        } else if (newCount == subTasks.size()) {
+            this.status = TaskStatus.NEW;
+        } else {
+            this.status = TaskStatus.IN_PROGRESS;
         }
     }
 }
