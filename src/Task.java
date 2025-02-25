@@ -4,14 +4,13 @@ public class Task {
 
     private final String name;
     private final String description;
-    private final Integer id;
+    private Integer id;
     protected TaskStatus status;
 
-    public Task(String name, String description, TaskStatus status, Integer id) {
+    public Task(String name, String description, TaskStatus status) {
         this.name = name;
         this.description = description;
         this.status = status;
-        this.id = id;
     }
 
     public String getName() {
@@ -30,6 +29,9 @@ public class Task {
         return status;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     @Override
     public int hashCode() {

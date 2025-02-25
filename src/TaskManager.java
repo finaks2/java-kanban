@@ -16,21 +16,46 @@ public class TaskManager {
     }
 
     public void addTask(Task task) {
-        tasks.put(task.getId(), task);
+        Integer newId = getNewTaskId();
+        task.setId(newId);
+        tasks.put(newId, task);
     }
 
-    public void addTask(SubTask subTask, Epic epic) {
-        Epic existingEpic = epics.get(epic.getId());
+    public void addEpic(Epic epic) {
+        Integer newId = getNewTaskId();
+        epic.setId(newId);
+        epics.put(newId, epic);
+    }
 
-        if (existingEpic == null) {
-            epics.put(epic.getId(), epic);
-            existingEpic = epic;
-        }
-        existingEpic.subTasks.add(subTask);
+    public void addSubTask(SubTask subTask, Epic epic) {
+        int newId = getNewTaskId();
+        subTask.setId(newId);
+        epic.subTasks.add(subTask);
     }
 
     public Task getTaskById(int id) {
         return tasks.get(id);
+    }
+
+    public Epic getEpicById(int id) {
+        return epics.get(id);
+    }
+
+    public SubTask getSubTaskById(int id) {
+        SubTask result = null;
+
+        for (Epic epic : epics.values()) {
+            for (SubTask subTask : epic.subTasks) {
+                if (subTask.getId() == id) {
+                    result = subTask;
+                    break;
+                }
+            }
+            if (result != null) {
+                break;
+            }
+        }
+        return result;
     }
 
     public void removeTask(Task task) {
@@ -38,17 +63,19 @@ public class TaskManager {
         if (task.getClass() == Epic.class) {
             epics.remove(task.getId());
         } else if (task.getClass() == SubTask.class) {
-            ((SubTask) task).epic.subTasks.remove(task);
+            ((SubTask) task).epic.subTasks.remove((SubTask) task);
             ((SubTask) task).epic.recalculateStatus();
         } else {
             tasks.remove(task.getId());
         }
     }
 
-    public void updateTask(Task task) {
+    public void updateTask(int id, Task task) {
+        task.setId(id);
+
         if (task.getClass() == Task.class) {
-            if (tasks.containsKey(task.getId())) {
-                tasks.put(task.getId(), task);
+            if (tasks.containsKey(id)) {
+                tasks.put(id, task);
             }
         } else if (task.getClass() == SubTask.class) {
             ArrayList<SubTask> subTasks = ((SubTask) task).epic.subTasks;
@@ -60,10 +87,10 @@ public class TaskManager {
                 }
             }
         } else {
-            Epic existingEpic = epics.get(task.getId());
+            Epic existingEpic = epics.get(id);
             if (existingEpic != null) {
                 ((Epic) task).subTasks.addAll(existingEpic.subTasks);
-                epics.put(task.getId(), (Epic) task);
+                epics.put(id, (Epic) task);
                 ((Epic) task).recalculateStatus();
             }
         }
@@ -84,7 +111,15 @@ public class TaskManager {
 
     public void clearTasks() {
         tasks.clear();
+    }
+
+    public void clearEpics() {
         epics.clear();
     }
 
+    public void clearSubTasks() {
+        for (Epic epic : epics.values()) {
+            epic.subTasks.clear();
+        }
+    }
 }
