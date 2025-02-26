@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -26,14 +28,14 @@ public class Main {
                 TaskStatus.NEW,
                 epic1
         );
-        taskManager.addSubTask(subTask1, epic1);
+        taskManager.addSubTask(subTask1);
 
         SubTask subTask2 = new SubTask("Отвезти маму",
                 "Забрать маму с работы и отвезти в магазин",
                 TaskStatus.NEW,
                 epic1
         );
-        taskManager.addSubTask(subTask2, epic1);
+        taskManager.addSubTask(subTask2);
 
         Epic epic2 = new Epic("Спланировать отпуск",
                 "Составить план отличного отдыха"
@@ -45,7 +47,7 @@ public class Main {
                 TaskStatus.NEW,
                 epic2
         );
-        taskManager.addSubTask(subTask3, epic2);
+        taskManager.addSubTask(subTask3);
 
         taskManager.printAllTasks();
 
@@ -64,12 +66,25 @@ public class Main {
                 TaskStatus.DONE,
                 epic1
         );
-        taskManager.updateTask(subTask1.getId(), subTask4);
+        subTask4.setId(subTask1.getId());
+        taskManager.updateTask(subTask4);
 
         System.out.println("Новое состояние эпика: " + epic1);
         System.out.println("====== Удаляем полностью эпик '" + epic1.getName() + "' ======");
         taskManager.removeTask(epic1);
         taskManager.printAllTasks();
+
+        System.out.println("====== Получаем подзадачи эпика, который удалили, по id '" + epic1.getId() + "':");
+        ArrayList<SubTask> subTasks = taskManager.getSubTasksByEpicId(epic1.getId());
+        for (SubTask subTask : subTasks) {
+            System.out.println(subTask);
+        }
+
+        System.out.println("====== Получаем подзадачи эпика по id '" + epic2.getId() + "':");
+        subTasks = taskManager.getSubTasksByEpicId(epic2.getId());
+        for (SubTask subTask : subTasks) {
+            System.out.println(subTask);
+        }
 
         System.out.println("====== Удаляем все задачи ======");
         taskManager.clearTasks();
